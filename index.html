@@ -501,11 +501,23 @@
         updateControlInstructions();
         
         document.addEventListener('keydown', (e) => {
-            keys[e.key.toLowerCase()] = true;
+            const key = e.key.toLowerCase();
+            keys[key] = true;
+            
+            // Prevent default scrolling for game controls
+            if (key === 'arrowup' || key === 'arrowdown' || key === 'w' || key === 's' || key === ' ') {
+                e.preventDefault();
+            }
         });
         
         document.addEventListener('keyup', (e) => {
-            keys[e.key.toLowerCase()] = false;
+            const key = e.key.toLowerCase();
+            keys[key] = false;
+            
+            // Prevent default scrolling for game controls
+            if (key === 'arrowup' || key === 'arrowdown' || key === 'w' || key === 's' || key === ' ') {
+                e.preventDefault();
+            }
         });
         
         // Control mode switching
