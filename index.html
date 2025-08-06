@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Classic Pong Game - Play against the computer in this retro arcade game">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlBvbmcgR2FtZSIsCiAgInNob3J0X25hbWUiOiAiUG9uZyIsCiAgImRlc2NyaXB0aW9uIjogIkNsYXNzaWMgUG9uZyBHYW1lIC0gUGxheSBhZ2FpbnN0IHRoZSBjb21wdXRlciIsCiAgInN0YXJ0X3VybCI6ICIuLyIsCiAgImRpc3BsYXkiOiAiZnVsbHNjcmVlbiIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzAwMDAwMCIsCiAgInRoZW1lX2NvbG9yIjogIiMwMDAwMDAiLAogICJvcmllbnRhdGlvbiI6ICJsYW5kc2NhcGUiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSGRwWkhSb1BTSXhNakFpSUdobGFXZG9kRDBpTVRJd0lqNDhjbVZqZENCM2FXUjBhRDBpTVRJd0lpQm9aV2xuYUhROUlqRXlNQ0lnWm1sc2JEMGlJekF3TURBQU1DSXZQANGM2Vm0lXN0lYNKI6ICIxMjB4MTIwIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhkcFpIUm9QU0l4TWpBaUlHaGxhV2RvZEQwaU1USXdJajQ4Y21WamRDQjNhV1IwYUQwaU1USXdJaUJvWldsbmFIUTlJakV5TUNJZ1ptbHNiRDBpSXpBd01EQTBNU0l2UGp4eVpXTjBJSGc5SWpRd0lpQjVQU0kxTUNJaUlIZHBaSFJvUFNJME1DSWdhR1ZwWjJoMFBTSXlNQ0lnWm1sc2JEMGlJekZtWmpreFJpSXZQangwWlhoMElIZzlJak16SWlCNVBTSXhNRElpSUdac2JEMGlJekZtWWpreVJpSWdabTl1ZEMxemFYcGxQU0kxTUNJK1VHOXVaend2ZEdWNGRENDhMM04yWnowaT4iLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9LAogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIZHBaSFJvUFNJMU1USWlJR2hsYVdkb2REMGlOVEV5SWo0OGNtVmpkQ0IzYVdSMGFEMGlOVEV5SWlCb1pXbG5hSFE5SWpVeE1pSWdabWxzYkQwaUl6QXdNREJtTUNJdlBqeHlaV04wSUhnOUlqZ3dJaUI1UFNJeE1EQWlJSGRwWkhSb1BTSTRNQ0lnYUdWcFoyaDBQU0kxTUNJZ1ptbHNiRDBpSXpGbVpqa3hSaUl2UGp4MFpYaDBJSGc5SWpJMU5pSWdlVDBpTWpJMUlpQm1iRDBpSXpGbVpqa3lSaUlnWm05dWRDMXphWHBsUFNJNE1DSTZRM0J2Ym1jOEwzUmxlSFE2UEM5emRtYz5JdlBqeHlaV04wSUhnOUlqTXdNQ0lnZVQwaU1UWXdJaUZtRUZlXRwIyF6WldsbmFIUTlJakl3SXVCVGU9KT1k8L3N2Yjw6ID0iLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iIzAwMDA0MSIvPjxyZWN0IHg9IjEwIiB5PSI1MCIgd2lkdGg9IjE1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjZmY5MWZmIi8+PHJlY3QgeD0iOTUiIHk9IjUwIiB3aWR0aD0iMTUiIGhlaWdodD0iMjAiIGZpbGw9IiNmZjkxZmYiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI1IiBmaWxsPSIjZmY5MWZmIi8+PHRleHQgeD0iNjAiIHk9Ijg1IiBmaWxsPSIjZmY5MmZmIiBmb250LXNpemU9IjE0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Qb25nPC90ZXh0Pjwvc3ZnPg==">
+    <title>Pong Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            overflow-x: hidden;
+        }
+        
+        .pwa-install {
+            display: block;
+            background: linear-gradient(45deg, #007fff, #00ccff);
+            color: white;
+            border: 3px solid #ffffff;
+            padding: 15px 30px;
+            margin: 20px 0;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0, 127, 255, 0.4);
+            animation: pulse 2s infinite;
+            transition: all 0.3s ease;
+        }
+        
+        .pwa-install:hover {
+            background: linear-gradient(45deg, #0066cc, #0099cc);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 127, 255, 0.6);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 15px rgba(0, 127, 255, 0.4); }
+            50% { box-shadow: 0 4px 25px rgba(0, 127, 255, 0.8); }
+            100% { box-shadow: 0 4px 15px rgba(0, 127, 255, 0.4); }
+        }
+        
+        .install-info {
+            background: rgba(0, 127, 255, 0.1);
+            border: 2px solid rgba(0, 127, 255, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        #gameContainer {
+            border: 2px solid #fff;
+            position: relative;
+            background: #000;
+            max-width: 100vw;
+            overflow: hidden;
+        }
+        
+        #gameCanvas {
+            display: block;
+            background: #000;
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .controls {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .controls button {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 15px 25px;
+            margin: 5px 10px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            min-height: 50px;
+            touch-action: manipulation;
+        }
+        
+        .control-selector {
+            margin: 10px 0;
+            display: none;
+        }
+        
+        .control-selector button {
+            background: #333;
+            color: #fff;
+            border: 2px solid #666;
+            padding: 8px 16px;
+            margin: 0 5px;
+            font-size: 14px;
+            min-height: auto;
+        }
+        
+        .control-selector button.active {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+        
+        .controls button:hover {
+            background: #ccc;
+        }
+        
+        .controls button:disabled {
+            background: #666;
+            color: #999;
+            cursor: not-allowed;
+        }
+        
+        .score {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        
+        .level {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        
+        .instructions {
+            text-align: center;
+            margin: 20px 0;
+            max-width: 600px;
+            padding: 0 20px;
+        }
+        
+        .touch-controls {
+            display: none;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 10px;
+        }
+        
+        .touch-buttons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .touch-up, .touch-down {
+            width: 80px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            touch-action: manipulation;
+            user-select: none;
+        }
+        
+        .touch-up:active, .touch-down:active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .touch-wheel {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            user-select: none;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .wheel-knob {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            position: absolute;
+            transition: transform 0.1s ease;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+        }
+        
+        .touch-wheel:active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .wheel-label {
+            position: absolute;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .wheel-label.up {
+            top: -5px;
+        }
+        
+        .wheel-label.down {
+            bottom: -5px;
+        }
+        
+        .touch-up:active, .touch-down:active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            #gameCanvas {
+                width: 100vw;
+                max-width: 400px;
+                height: 200px;
+            }
+            
+            .touch-controls {
+                display: flex;
+            }
+            
+            .control-selector {
+                display: block;
+            }
+            
+            .instructions {
+                font-size: 14px;
+            }
+            
+            h1 {
+                font-size: 24px;
+                margin: 10px 0;
+            }
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            padding: 30px;
+            border: 2px solid #fff;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pong Game</h1>
+    
+    <button id="installPWA" class="pwa-install">📱 INSTALL AS APP 📱</button>
+    
+    <div class="install-info" id="installInfo">
+        <strong>🎮 Make this a standalone app!</strong><br>
+        Click the big blue button above or use your browser's menu:<br>
+        📱 <strong>Mobile:</strong> Browser menu → "Add to Home Screen"<br>
+        💻 <strong>Desktop:</strong> Address bar install icon or browser menu
+    </div>
+    
+    <div class="instructions">
+        <p><strong>Controls:</strong> <span id="controlsText">Use W/S keys or Arrow Up/Down to move your paddle</span></p>
+        <p>First to 10 points wins! The ball gets faster each level.</p>
+    </div>
+    
+    <div class="score">
+        <span>Player: <span id="playerScore">0</span></span> | 
+        <span>Computer: <span id="computerScore">0</span></span>
+    </div>
+    
+    <div class="level">Level: <span id="currentLevel">1</span></div>
+    
+    <div class="controls">
+        <button id="startBtn">Start Game</button>
+        <button id="pauseBtn" disabled>Pause</button>
+        <button id="resetBtn">Reset</button>
+    </div>
+    
+    <div class="control-selector" id="controlSelector">
+        <p>Mobile Controls:</p>
+        <button id="buttonsMode" class="active">Buttons</button>
+        <button id="wheelMode">Wheel</button>
+    </div>
+    
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+        <div id="gameOver" class="game-over">
+            <h2 id="gameOverText">Game Over!</h2>
+            <p id="gameOverMessage"></p>
+            <button onclick="resetGame()">Play Again</button>
+        </div>
+    </div>
+
+    <div class="touch-controls" id="touchControls">
+        <div class="touch-buttons" id="touchButtons">
+            <div class="touch-up" id="touchUp">▲</div>
+            <div class="touch-down" id="touchDown">▼</div>
+        </div>
+        <div class="touch-wheel" id="touchWheel" style="display: none;">
+            <div class="wheel-label up">UP</div>
+            <div class="wheel-knob" id="wheelKnob"></div>
+            <div class="wheel-label down">DOWN</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // PWA Installation
+        let deferredPrompt;
+        const installButton = document.getElementById('installPWA');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            deferredPrompt = e;
+            // Show the install button
+            installButton.style.display = 'block';
+        });
+        
+        installButton.addEventListener('click', async () => {
+            if (!deferredPrompt) {
+                // For iOS Safari and other browsers that don't support the install prompt
+                alert('📱 TO INSTALL THIS APP:\n\n🍎 iPhone/iPad (Safari):\n• Tap Share button (□↗) at bottom\n• Select "Add to Home Screen"\n• Tap "Add"\n\n🤖 Android (Chrome):\n• Tap menu (⋮) in browser\n• Select "Add to Home Screen"\n• Tap "Add"\n\n💻 Desktop:\n• Look for install icon in address bar\n• Or check browser menu for "Install" option');
+                return;
+            }
+            
+            // Show the install prompt
+            deferredPrompt.prompt();
+            // Wait for the user to respond to the prompt
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+            // Clear the deferredPrompt variable
+            deferredPrompt = null;
+            // Hide the install button
+            installButton.style.display = 'none';
+            document.getElementById('installInfo').style.display = 'none';
+        });
+        
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            installButton.style.display = 'none';
+            document.getElementById('installInfo').style.display = 'none';
+        });
+        
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register(
+                        'data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgKGUpID0+IHsKICBjb25zb2xlLmxvZygnU2VydmljZSBXb3JrZXIgaW5zdGFsbGVkJyk7CiAgc2VsZi5za2lwV2FpdGluZygpOwp9KTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignYWN0aXZhdGUnLCAoZSkgPT4gewogIGNvbnNvbGUubG9nKCdTZXJ2aWNlIFdvcmtlciBhY3RpdmF0ZWQnKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgKGUpID0+IHsKICAvLyBCYXNpYyBmZXRjaCBoYW5kbGluZyAtIGp1c3QgcGFzcyB0aHJvdWdoCiAgZS5yZXNwb25kV2l0aChmZXRjaChlLnJlcXVlc3QpKTsKfSk7'
+                    );
+                    console.log('Service Worker registered:', registration);
+                } catch (error) {
+                    console.log('Service Worker registration failed:', error);
+                }
+            });
+        }
+        
+        // Audio context for sound effects
+        let audioContext;
+        
+        // Initialize audio context on first user interaction
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+        
+        // Sound generation functions
+        function playPaddleSound() {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 220; // A3 note
+            oscillator.type = 'square';
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+        
+        function playWallSound() {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 150; // Lower pitched for wall hits
+            oscillator.type = 'sawtooth';
+            
+            gainNode.gain.setValueAtTime(0.08, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.15);
+        }
+        
+        function playScoreSound() {
+            if (!audioContext) return;
+            
+            // Play a quick ascending sound for scoring
+            const frequencies = [262, 330, 392]; // C, E, G
+            frequencies.forEach((freq, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = freq;
+                oscillator.type = 'sine';
+                
+                const startTime = audioContext.currentTime + index * 0.1;
+                gainNode.gain.setValueAtTime(0.1, startTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + 0.2);
+                
+                oscillator.start(startTime);
+                oscillator.stop(startTime + 0.2);
+            });
+        }
+        
+        // Game state
+        let gameRunning = false;
+        let gamePaused = false;
+        let level = 1;
+        let playerScore = 0;
+        let computerScore = 0;
+        
+        // Game objects
+        const paddle = {
+            width: 20,
+            height: 100,
+            player: { x: 30, y: canvas.height / 2 - 50, dy: 0 },
+            computer: { x: canvas.width - 50, y: canvas.height / 2 - 50, dy: 0 }
+        };
+        
+        const ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            dx: 0,
+            dy: 0,
+            radius: 10,
+            baseSpeed: 4
+        };
+        
+        // Input handling
+        const keys = {};
+        let wheelInput = 0; // -1 for up, 1 for down, 0 for center
+        let isDragging = false;
+        let touchUpPressed = false;
+        let touchDownPressed = false;
+        let controlMode = 'buttons'; // 'buttons' or 'wheel'
+        
+        // Check if mobile device
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        function updateControlInstructions() {
+            if (isMobile) {
+                if (controlMode === 'buttons') {
+                    document.getElementById('controlsText').textContent = 'Tap the up/down buttons below to move your paddle';
+                } else {
+                    document.getElementById('controlsText').textContent = 'Use the wheel below to move your paddle up and down';
+                }
+            }
+        }
+        
+        updateControlInstructions();
+        
+        document.addEventListener('keydown', (e) => {
+            keys[e.key.toLowerCase()] = true;
+        });
+        
+        document.addEventListener('keyup', (e) => {
+            keys[e.key.toLowerCase()] = false;
+        });
+        
+        // Control mode switching
+        document.getElementById('buttonsMode').addEventListener('click', () => {
+            controlMode = 'buttons';
+            document.getElementById('touchButtons').style.display = 'flex';
+            document.getElementById('touchWheel').style.display = 'none';
+            document.getElementById('buttonsMode').classList.add('active');
+            document.getElementById('wheelMode').classList.remove('active');
+            updateControlInstructions();
+        });
+        
+        document.getElementById('wheelMode').addEventListener('click', () => {
+            controlMode = 'wheel';
+            document.getElementById('touchButtons').style.display = 'none';
+            document.getElementById('touchWheel').style.display = 'flex';
+            document.getElementById('buttonsMode').classList.remove('active');
+            document.getElementById('wheelMode').classList.add('active');
+            updateControlInstructions();
+        });
+        
+        // Button controls
+        document.getElementById('touchUp').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            touchUpPressed = true;
+        });
+        
+        document.getElementById('touchUp').addEventListener('touchend', (e) => {
+            e.preventDefault();
+            touchUpPressed = false;
+        });
+        
+        document.getElementById('touchDown').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            touchDownPressed = true;
+        });
+        
+        document.getElementById('touchDown').addEventListener('touchend', (e) => {
+            e.preventDefault();
+            touchDownPressed = false;
+        });
+        
+        // Wheel controls
+        const touchWheel = document.getElementById('touchWheel');
+        const wheelKnob = document.getElementById('wheelKnob');
+        
+        function updateWheelPosition(clientY) {
+            const rect = touchWheel.getBoundingClientRect();
+            const centerY = rect.top + rect.height / 2;
+            const relativeY = clientY - centerY;
+            const maxDistance = 35; // Maximum distance from center
+            
+            // Clamp the position
+            const clampedY = Math.max(-maxDistance, Math.min(maxDistance, relativeY));
+            
+            // Update knob position
+            wheelKnob.style.transform = `translateY(${clampedY}px)`;
+            
+            // Set wheel input (-1 to 1)
+            wheelInput = clampedY / maxDistance;
+        }
+        
+        function resetWheel() {
+            wheelKnob.style.transform = 'translateY(0px)';
+            wheelInput = 0;
+            isDragging = false;
+        }
+        
+        // Touch events for wheel
+        touchWheel.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            isDragging = true;
+            updateWheelPosition(e.touches[0].clientY);
+        });
+        
+        touchWheel.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (isDragging) {
+                updateWheelPosition(e.touches[0].clientY);
+            }
+        });
+        
+        touchWheel.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            resetWheel();
+        });
+        
+        // Mouse events for wheel (works on desktop too!)
+        touchWheel.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            isDragging = true;
+            updateWheelPosition(e.clientY);
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                updateWheelPosition(e.clientY);
+            }
+        });
+        
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                resetWheel();
+            }
+        });
+        
+        // Prevent scrolling on touch
+        document.addEventListener('touchmove', (e) => {
+            if (e.target.closest('#gameContainer') || e.target.closest('.touch-controls')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // Game functions
+        function resetBall() {
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            const speed = ball.baseSpeed + (level - 1) * 1.5;
+            const angle = (Math.random() - 0.5) * Math.PI / 3; // Random angle within 60 degrees
+            ball.dx = Math.cos(angle) * speed * (Math.random() > 0.5 ? 1 : -1);
+            ball.dy = Math.sin(angle) * speed;
+        }
+        
+        function resetGame() {
+            playerScore = 0;
+            computerScore = 0;
+            level = 1;
+            updateScore();
+            resetBall();
+            paddle.player.y = canvas.height / 2 - 50;
+            paddle.computer.y = canvas.height / 2 - 50;
+            document.getElementById('gameOver').style.display = 'none';
+            gameRunning = false;
+            gamePaused = false;
+            updateButtons();
+        }
+        
+        function updateScore() {
+            document.getElementById('playerScore').textContent = playerScore;
+            document.getElementById('computerScore').textContent = computerScore;
+            document.getElementById('currentLevel').textContent = level;
+        }
+        
+        function updateButtons() {
+            document.getElementById('startBtn').disabled = gameRunning && !gamePaused;
+            document.getElementById('pauseBtn').disabled = !gameRunning;
+            document.getElementById('pauseBtn').textContent = gamePaused ? 'Resume' : 'Pause';
+        }
+        
+        function checkCollision(rect1, rect2) {
+            return rect1.x < rect2.x + rect2.width &&
+                   rect1.x + rect1.width > rect2.x &&
+                   rect1.y < rect2.y + rect2.height &&
+                   rect1.y + rect1.height > rect2.y;
+        }
+        
+        function update() {
+            if (!gameRunning || gamePaused) return;
+            
+            // Player paddle movement
+            const paddleSpeed = 8;
+            if (keys['w'] || keys['arrowup'] || touchUpPressed || wheelInput < -0.2) {
+                paddle.player.y = Math.max(0, paddle.player.y - paddleSpeed);
+            }
+            if (keys['s'] || keys['arrowdown'] || touchDownPressed || wheelInput > 0.2) {
+                paddle.player.y = Math.min(canvas.height - paddle.height, paddle.player.y + paddleSpeed);
+            }
+            
+            // Computer paddle AI (follows ball with some delay)
+            const computerCenter = paddle.computer.y + paddle.height / 2;
+            const ballCenter = ball.y;
+            const computerSpeed = 5 + level * 0.5; // Gets faster each level
+            
+            if (computerCenter < ballCenter - 10) {
+                paddle.computer.y = Math.min(canvas.height - paddle.height, paddle.computer.y + computerSpeed);
+            } else if (computerCenter > ballCenter + 10) {
+                paddle.computer.y = Math.max(0, paddle.computer.y - computerSpeed);
+            }
+            
+            // Ball movement
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+            
+            // Ball collision with top and bottom walls
+            if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= canvas.height) {
+                ball.dy = -ball.dy;
+                playWallSound();
+            }
+            
+            // Ball collision with paddles
+            const ballRect = { x: ball.x - ball.radius, y: ball.y - ball.radius, width: ball.radius * 2, height: ball.radius * 2 };
+            const playerPaddleRect = { x: paddle.player.x, y: paddle.player.y, width: paddle.width, height: paddle.height };
+            const computerPaddleRect = { x: paddle.computer.x, y: paddle.computer.y, width: paddle.width, height: paddle.height };
+            
+            if (checkCollision(ballRect, playerPaddleRect) && ball.dx < 0) {
+                ball.dx = -ball.dx * 1.05; // Slightly increase speed
+                // Add some angle based on where it hits the paddle
+                const hitPos = (ball.y - paddle.player.y) / paddle.height - 0.5;
+                ball.dy = hitPos * 6;
+                playPaddleSound();
+            }
+            
+            if (checkCollision(ballRect, computerPaddleRect) && ball.dx > 0) {
+                ball.dx = -ball.dx * 1.05; // Slightly increase speed
+                // Add some angle based on where it hits the paddle
+                const hitPos = (ball.y - paddle.computer.y) / paddle.height - 0.5;
+                ball.dy = hitPos * 6;
+                playPaddleSound();
+            }
+            
+            // Scoring
+            if (ball.x < 0) {
+                computerScore++;
+                playScoreSound();
+                resetBall();
+                if (computerScore >= 10) {
+                    endGame('Computer Wins!');
+                    return;
+                }
+            }
+            
+            if (ball.x > canvas.width) {
+                playerScore++;
+                playScoreSound();
+                resetBall();
+                if (playerScore >= 10) {
+                    level++;
+                    playerScore = 0;
+                    computerScore = 0;
+                    if (level > 10) {
+                        endGame('You Won All Levels!');
+                        return;
+                    }
+                }
+            }
+            
+            updateScore();
+        }
+        
+        function endGame(message) {
+            gameRunning = false;
+            document.getElementById('gameOverText').textContent = message;
+            document.getElementById('gameOverMessage').textContent = `Final Level: ${level}`;
+            document.getElementById('gameOver').style.display = 'block';
+            updateButtons();
+        }
+        
+        function draw() {
+            // Clear canvas
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw center line
+            ctx.strokeStyle = '#fff';
+            ctx.setLineDash([10, 10]);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, 0);
+            ctx.lineTo(canvas.width / 2, canvas.height);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Draw paddles
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(paddle.player.x, paddle.player.y, paddle.width, paddle.height);
+            ctx.fillRect(paddle.computer.x, paddle.computer.y, paddle.width, paddle.height);
+            
+            // Draw ball
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw pause overlay
+            if (gamePaused) {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.font = '48px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('PAUSED', canvas.width / 2, canvas.height / 2);
+            }
+        }
+        
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // Event listeners
+        document.getElementById('startBtn').addEventListener('click', () => {
+            initAudio(); // Initialize audio on first interaction
+            if (!gameRunning) {
+                gameRunning = true;
+                gamePaused = false;
+                resetBall();
+            } else if (gamePaused) {
+                gamePaused = false;
+            }
+            updateButtons();
+        });
+        
+        document.getElementById('pauseBtn').addEventListener('click', () => {
+            if (gameRunning) {
+                gamePaused = !gamePaused;
+                updateButtons();
+            }
+        });
+        
+        document.getElementById('resetBtn').addEventListener('click', resetGame);
+        
+        // Initialize game
+        resetGame();
+        gameLoop();
+    </script>
+</body>
+</html>
