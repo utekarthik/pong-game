@@ -332,7 +332,37 @@
         let deferredPrompt;
         const installButton = document.getElementById('installPWA');
         
+        // Create and set up the manifest dynamically
+        const manifestData = {
+            name: "Pong Game",
+            short_name: "Pong",
+            description: "Classic Pong Game - Play against the computer",
+            start_url: "./",
+            display: "standalone",
+            background_color: "#000000",
+            theme_color: "#000000",
+            orientation: "any",
+            icons: [
+                {
+                    src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgZmlsbD0iIzAwMDA0MSIvPjxyZWN0IHg9IjMwIiB5PSI4NiIgd2lkdGg9IjE1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjZmY5MWZmIi8+PHJlY3QgeD0iMTQ3IiB5PSI4NiIgd2lkdGg9IjE1IiBoZWlnaHQ9IjIwIiBmaWxsPSIjZmY5MWZmIi8+PGNpcmNsZSBjeD0iOTYiIGN5PSI5NiIgcj0iNSIgZmlsbD0iI2ZmOTFmZiIvPjx0ZXh0IHg9Ijk2IiB5PSIxMzAiIGZpbGw9IiNmZjkyZmYiIGZvbnQtc2l6ZT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdhbWU8L3RleHQ+PC9zdmc+",
+                    sizes: "192x192",
+                    type: "image/svg+xml"
+                },
+                {
+                    src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzAwMDA0MSIvPjxyZWN0IHg9IjgwIiB5PSIyNDYiIHdpZHRoPSIzMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2ZmOTFmZiIvPjxyZWN0IHg9IjQwMiIgeT0iMjQ2IiB3aWR0aD0iMzAiIGhlaWdodD0iMjAiIGZpbGw9IiNmZjkxZmYiLz48Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjgiIGZpbGw9IiNmZjkxZmYiLz48dGV4dCB4PSIyNTYiIHk9IjMwMCIgZmlsbD0iI2ZmOTJmZiIgZm9udC1zaXplPSI0MCI+UG9uZzwvdGV4dD48L3N2Zz4=",
+                    sizes: "512x512",
+                    type: "image/svg+xml"
+                }
+            ]
+        };
+        
+        // Create manifest blob and set it
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        document.getElementById('manifest').href = manifestURL;
+        
         window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('beforeinstallprompt event fired');
             // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
             // Stash the event so it can be triggered later
@@ -344,20 +374,26 @@
         installButton.addEventListener('click', async () => {
             if (!deferredPrompt) {
                 // For iOS Safari and other browsers that don't support the install prompt
-                alert('📱 TO INSTALL THIS APP:\n\n🍎 iPhone/iPad (Safari):\n• Tap Share button (□↗) at bottom\n• Select "Add to Home Screen"\n• Tap "Add"\n\n🤖 Android (Chrome):\n• Tap menu (⋮) in browser\n• Select "Add to Home Screen"\n• Tap "Add"\n\n💻 Desktop:\n• Look for install icon in address bar\n• Or check browser menu for "Install" option');
+                alert('📱 TO INSTALL THIS APP:\n\n🖥️ Desktop Chrome:\n• Look for install icon (⊕) in address bar\n• Or press Ctrl+Shift+A\n• Or go to Chrome menu → "Install Pong Game"\n\n🍎 iPhone/iPad (Safari):\n• Tap Share button (□↗) at bottom\n• Select "Add to Home Screen"\n• Tap "Add"\n\n🤖 Android (Chrome):\n• Tap menu (⋮) in browser\n• Select "Add to Home Screen"\n• Tap "Add"');
                 return;
             }
             
             // Show the install prompt
-            deferredPrompt.prompt();
+            const promptResult = deferredPrompt.prompt();
+            console.log('Install prompt shown');
+            
             // Wait for the user to respond to the prompt
             const { outcome } = await deferredPrompt.userChoice;
             console.log(`User response to the install prompt: ${outcome}`);
+            
             // Clear the deferredPrompt variable
             deferredPrompt = null;
-            // Hide the install button
-            installButton.style.display = 'none';
-            document.getElementById('installInfo').style.display = 'none';
+            
+            if (outcome === 'accepted') {
+                // Hide the install button
+                installButton.style.display = 'none';
+                document.getElementById('installInfo').style.display = 'none';
+            }
         });
         
         window.addEventListener('appinstalled', () => {
@@ -366,13 +402,46 @@
             document.getElementById('installInfo').style.display = 'none';
         });
         
-        // Register Service Worker
+        // Register Service Worker with proper scope
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', async () => {
                 try {
-                    const registration = await navigator.serviceWorker.register(
-                        'data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgKGUpID0+IHsKICBjb25zb2xlLmxvZygnU2VydmljZSBXb3JrZXIgaW5zdGFsbGVkJyk7CiAgc2VsZi5za2lwV2FpdGluZygpOwp9KTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignYWN0aXZhdGUnLCAoZSkgPT4gewogIGNvbnNvbGUubG9nKCdTZXJ2aWNlIFdvcmtlciBhY3RpdmF0ZWQnKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgKGUpID0+IHsKICAvLyBCYXNpYyBmZXRjaCBoYW5kbGluZyAtIGp1c3QgcGFzcyB0aHJvdWdoCiAgZS5yZXNwb25kV2l0aChmZXRjaChlLnJlcXVlc3QpKTsKfSk7'
-                    );
+                    // Create a proper service worker
+                    const swCode = `
+                        const CACHE_NAME = 'pong-game-v1';
+                        const urlsToCache = [
+                            './',
+                            './index.html'
+                        ];
+                        
+                        self.addEventListener('install', (event) => {
+                            console.log('Service Worker installing');
+                            event.waitUntil(
+                                caches.open(CACHE_NAME)
+                                    .then((cache) => cache.addAll(urlsToCache))
+                                    .then(() => self.skipWaiting())
+                            );
+                        });
+                        
+                        self.addEventListener('activate', (event) => {
+                            console.log('Service Worker activating');
+                            event.waitUntil(self.clients.claim());
+                        });
+                        
+                        self.addEventListener('fetch', (event) => {
+                            event.respondWith(
+                                caches.match(event.request)
+                                    .then((response) => {
+                                        return response || fetch(event.request);
+                                    })
+                            );
+                        });
+                    `;
+                    
+                    const swBlob = new Blob([swCode], { type: 'application/javascript' });
+                    const swURL = URL.createObjectURL(swBlob);
+                    
+                    const registration = await navigator.serviceWorker.register(swURL);
                     console.log('Service Worker registered:', registration);
                 } catch (error) {
                     console.log('Service Worker registration failed:', error);
